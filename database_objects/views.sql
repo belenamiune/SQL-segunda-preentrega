@@ -3,9 +3,9 @@ USE library;
 
 -- Views: 
 
--- View: UserDetails
+-- View: vw_UserDetails
 -- Objetivo: Obtener detalles de los usuarios junto con su tipo
-CREATE VIEW UserDetails AS
+CREATE VIEW vw_UserDetails AS
 SELECT 
     u.User_ID, 
     u.User_Name, 
@@ -18,9 +18,9 @@ FROM
 JOIN 
     USERTYPES ut ON u.User_Type = ut.User_Type;
 
--- View: AvailableBooks
+-- View: vw_AvailableBooks
 -- Objetivo: Mostrar todos los libros disponibles para préstamo, junto con su categoría y la editorial.
-CREATE VIEW AvailableBooks AS
+CREATE VIEW vw_AvailableBooks AS
 SELECT 
     b.Book_ID, 
     b.Title, 
@@ -36,9 +36,9 @@ WHERE
     b.Available = TRUE;
 
 
--- View: UserLoans
+-- View: vw_UserLoans
 -- Objetivo: Listar todos los préstamos de libros realizados por los usuarios, junto con detalles sobre el usuario y el libro.
-CREATE VIEW UserLoans AS
+CREATE VIEW vw_UserLoans AS
 SELECT 
     u.User_Name, 
     b.Title, 
@@ -51,9 +51,9 @@ JOIN
 JOIN 
     BOOK b ON l.Book_ID = b.Book_ID;
     
--- View: LibrarianStats
+-- View: vw_LibrarianStats 
 -- Objetivo: Proporcionar estadísticas sobre los bibliotecarios, como el número de libros prestados por cada uno.
-CREATE VIEW LibrarianStats AS
+CREATE VIEW vw_LibrarianStats AS
 SELECT 
     l.Librarian_Name, 
     COUNT(lo.Book_ID) AS Total_Loans
@@ -64,9 +64,9 @@ LEFT JOIN
 GROUP BY 
     l.Librarian_Name;
     
--- View: UserTypeSummary
+-- View: vw_UserTypeSummary
 -- Objetivo: Mostrar un resumen del número de usuarios por tipo de usuario.
-CREATE VIEW UserTypeSummary AS
+CREATE VIEW vw_UserTypeSummary AS
 SELECT 
     ut.User_Type_Name, 
     COUNT(u.User_ID) AS Total_Users
@@ -77,9 +77,9 @@ LEFT JOIN
 GROUP BY 
     ut.User_Type_Name;
     
--- View: CategoryBookCount
+-- View: vw_CategoryBookCount
 -- Objetivo: Listar las categorías de libros junto con el número total de libros en cada categoría.
-CREATE VIEW CategoryBookCount AS
+CREATE VIEW vw_CategoryBookCount AS
 SELECT 
     c.Category_Name, 
     COUNT(b.Book_ID) AS Total_Books
@@ -90,9 +90,9 @@ LEFT JOIN
 GROUP BY 
     c.Category_Name;
     
--- View: BookCategorySummary
+-- View: vw_BookCategorySummary
 -- Objetivo: Proporcionar un resumen del número de libros por categoría, junto con la cantidad de préstamos realizados.
-CREATE VIEW BookCategorySummary AS
+CREATE VIEW vw_BookCategorySummary AS
 SELECT 
     c.Category_Name, 
     COUNT(b.Book_ID) AS Total_Books,
@@ -105,11 +105,12 @@ LEFT JOIN
     LOAN l ON b.Book_ID = l.Book_ID
 GROUP BY 
     c.Category_Name;
+
     
 
--- View: PopularBooks
+-- View: vw_PopularBooks
 -- Objetivo: Listar los libros más prestados, mostrando la cantidad de veces que se han prestado.
-CREATE VIEW PopularBooks AS
+CREATE VIEW vw_PopularBooks AS
 SELECT 
     b.Title, 
     COUNT(l.Loan_ID) AS Times_Loaned
@@ -123,9 +124,9 @@ ORDER BY
     Times_Loaned DESC;
     
 
--- View: OverdueLoans
+-- View: vw_OverdueLoans
 -- Objetivo: Mostrar los préstamos que están atrasados, junto con la información del usuario y del libro.
-CREATE VIEW OverdueLoans AS
+CREATE VIEW vw_OverdueLoans AS
 SELECT 
     u.User_Name, 
     b.Title, 

@@ -54,6 +54,7 @@ BEGIN
     FROM LOAN
     WHERE Book_ID = OLD.Book_ID AND Return_Date IS NULL;
     
+    -- Manejo de errores: Si hay préstamos activos
     IF loanCount > 0 THEN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'No se puede eliminar el libro porque está prestado';

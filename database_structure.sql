@@ -7,7 +7,7 @@ USE library;
 
 -- Table: USERTYPES
 CREATE TABLE USERTYPES (
-    User_Type INT PRIMARY KEY AUTO_INCREMENT, 
+    User_Type INT PRIMARY KEY AUTO_INCREMENT NOT NULL, 
     User_Type_Name VARCHAR(50) NOT NULL, 
     Description VARCHAR(255)
 );
@@ -18,8 +18,8 @@ CREATE TABLE USER (
     User_Name VARCHAR(100) NOT NULL,
     Address VARCHAR(150),
     Phone VARCHAR(15),
-    Email VARCHAR(100),
-    User_Type INT(50)
+    Email VARCHAR(100) NOT NULL,
+    User_Type INT(50) NOT NULL
 );
 
 
@@ -40,7 +40,7 @@ CREATE TABLE CATEGORY (
 -- Table: EDITORY
 CREATE TABLE EDITORY (
     Editory_ID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    Editory_Name VARCHAR(255) NOT NULL
+    Editory_Name VARCHAR(100) NOT NULL
 );
 
 -- Table: SHELF
@@ -53,7 +53,7 @@ CREATE TABLE SHELF (
 -- Table: AUTHOR
 CREATE TABLE AUTHOR (
     Author_ID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    Author_Name VARCHAR(1000) NOT NULL
+    Author_Name VARCHAR(100) NOT NULL
 );
 
 
@@ -62,17 +62,17 @@ CREATE TABLE BOOK (
     Book_ID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     Title VARCHAR(200) NOT NULL,
     Year YEAR,
-    Amount_of_copies INT,
-    Category_ID INT,
-    Editory_ID INT,
-    Shelf_ID INT,
+    Amount_of_copies INT NOT NULL,
+    Category_ID INT NOT NULL,
+    Editory_ID INT NOT NULL,
+    Shelf_ID INT NOT NULL,
     Available BOOLEAN DEFAULT TRUE
 );
 
 -- Table: BOOK_AUTHOR
 CREATE TABLE BOOK_AUTHOR (
-    Book_ID INT,                            
-    Author_ID INt,   
+    Book_ID INT NOT NULL,                            
+    Author_ID INt NOT NULL,   
     PRIMARY KEY (Book_ID, Author_ID)
 );
 
@@ -83,14 +83,14 @@ CREATE TABLE LOAN (
     Return_Date DATE,
     Status VARCHAR(50),
     User_ID INT,
-	Librarian_ID INT,
+	Librarian_ID INT NOT NULL,
 	Book_ID INT NOT NULL
 );
 
 -- Table: RESERVATION
 CREATE TABLE RESERVATION (
     Reservation_ID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    Reservation_Date DATE,
+    Reservation_Date DATE NOT NULL,
     Reservation_Status VARCHAR(50),
     User_ID INT
 );
@@ -98,20 +98,20 @@ CREATE TABLE RESERVATION (
 -- Table: SANCTION
 CREATE TABLE SANCTION (
     Sanction_ID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    Sanction_Date DATE,
+    Sanction_Date DATE NOT NULL,
     Price DECIMAL(10, 2),
     Description TEXT,
     Sanction_Status VARCHAR(50),
-    User_ID INT,
+    User_ID INT NOT NULL,
     Loan_ID INT
 );
 
 -- Table: FINE
 CREATE TABLE FINE (
     Fine_ID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    Price DECIMAL(10, 2),
+    Price DECIMAL(10, 2) NOT NULL,
     Description TEXT,
-    Sanction_ID INT
+    Sanction_ID INT NOT NULL
 );
 
 -- Definition of FK
@@ -145,7 +145,8 @@ FOREIGN KEY (Author_ID) REFERENCES AUTHOR(Author_ID) ON DELETE CASCADE;
 -- LOAN
 ALTER TABLE LOAN
 ADD CONSTRAINT FK_Loan_User
-FOREIGN KEY (User_ID) REFERENCES USER(User_ID);
+FOREIGN KEY (User_ID) REFERENCES USER(User_ID)
+ON DELETE SET NULL;
 
 ALTER TABLE LOAN
 ADD CONSTRAINT FK_Loan_Librarian
@@ -159,7 +160,8 @@ FOREIGN KEY (Book_ID) REFERENCES BOOK(Book_ID);
 -- RESERVATION
 ALTER TABLE RESERVATION
 ADD CONSTRAINT FK_Reservation_User
-FOREIGN KEY (User_ID) REFERENCES USER(User_ID);
+FOREIGN KEY (User_ID) REFERENCES USER(User_ID)
+ON DELETE SET NULL;
 
 -- SANCTION
 ALTER TABLE SANCTION
